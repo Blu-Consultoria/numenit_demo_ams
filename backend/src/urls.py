@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.urls import path
 from . import routes
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    path('', routes.index, name="index"),
+    path('', routes.index, name='index'),
+    path('dashboard/', routes.dashboard, name='dashboard'),
+    path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
 ]

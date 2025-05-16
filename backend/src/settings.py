@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'corsheaders',
     
-    # our apps
+    # criados
     'users',
     'dashboard',
 ]
@@ -148,3 +149,5 @@ CORS_ALLOWED_ORIGINS = [
 
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+AUTH_USER_MODEL = 'users.CustomUser'

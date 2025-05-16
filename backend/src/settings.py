@@ -80,6 +80,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # To configure a postgresql
+    #'default': {
+    #    'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': 'nome_do_banco',
+    #    'USER': 'nome_do_usuario',
+    #    'PASSWORD': 'senha_forte',
+    #    'HOST': 'localhost',
+    #    'PORT': '5432',  # ou a porta do seu PostgreSQL
+    #}
+    # para criar um superuser:
+    # python manage.py createsuperuser
 }
 
 

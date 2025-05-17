@@ -4,12 +4,40 @@
 <div class="container">
   <header>
     <h1>Usuários</h1>
-    <a href="{% url 'dashboard' %}" class="back-btn">← Voltar ao Dashboard</a>
+    <a href="{% url 'dashboard' %}" class="back-btn" style="text-decoration: none;">← Voltar ao Dashboard</a>
+    <a href="{% url 'user_create' %}" class="btn-secondary" style="text-decoration: none;">+ Novo Usuário</a>
   </header>
 
   <div class="dashboard-content">
     <h2>Lista de usuários</h2>
-    <p>Aqui será exibida a lista de usuários registrados.</p>
+
+    {% if users %}
+      <table>
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.tipo }}</td>
+            <td>
+              <a href="{% url 'user_edit' user.id %}">Edit</a> |
+              <a href="{% url 'user_delete' user.id %}">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Nenhum usuário registrado.</p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

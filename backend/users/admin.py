@@ -2,12 +2,23 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Cliente
 
-@admin.register(CustomUser)
+# Para o CustomUser, herdamos de UserAdmin para aproveitar funcionalidades do Django
 class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = ('username', 'email', 'tipo', 'cliente', 'is_staff', 'is_active')
+    # Campos extras para exibir e editar
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('tipo', 'cliente', 'telefone', 'cpf', 'data_inicio', 'data_fim')}),
+        ('Informações adicionais', {'fields': ('tipo', 'data_inicio', 'data_fim', 'telefone', 'cpf')}),
     )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Informações adicionais', {'fields': ('tipo', 'telefone', 'cpf')}),
+    )
+    list_display = ['username', 'email', 'first_name', 'last_name', 'tipo', 'is_staff']
+    search_fields = ['username', 'email', 'cpf']
 
-admin.site.register(Cliente)
+# Registrar o CustomUser com o admin customizado
+admin.site.register(CustomUser, CustomUserAdmin)
+
+# Registrar Cliente no admin, permitindo edição simples
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ['nome_cliente', 'id_cliente', 'telefone', 'email', 'responsavel', 'segmento']
+    search_fields = ['nome_cliente', 'id_cliente', 'email']

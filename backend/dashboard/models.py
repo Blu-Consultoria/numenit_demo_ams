@@ -1,5 +1,5 @@
 from django.db import models
-
+from users.models import CustomUser, Cliente
 
 # Create your models here.
 

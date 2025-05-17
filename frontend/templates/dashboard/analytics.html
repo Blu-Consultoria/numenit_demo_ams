@@ -1,0 +1,15 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container">
+  <header>
+    <h1>Análises</h1>
+    <a href="{% url 'dashboard' %}" class="back-btn">← Voltar ao Dashboard</a>
+  </header>
+
+  <div class="dashboard-content">
+    <h2>Visão geral</h2>
+    <p>Visualizações de desempenho, gráficos e estatísticas.</p>
+  </div>
+</div>
+{% endblock %}

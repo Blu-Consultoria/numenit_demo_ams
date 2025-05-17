@@ -151,7 +151,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.212.134.180:3000" 
 ]
 
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = '/dashboard/'
-
 AUTH_USER_MODEL = 'users.CustomUser'

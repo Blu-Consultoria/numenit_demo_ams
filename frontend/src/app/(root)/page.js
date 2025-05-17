@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { loginUser } from "../actions/login";
 
 export default function LoginPage() {
   return (
@@ -15,15 +16,17 @@ export default function LoginPage() {
           <div className="text-center">
             <h2 className="mt-4 mb-2 text-2xl font-semibold text-gray-800">Bem-Vindo!</h2>
           </div>
-          <form className="flex flex-col gap-4" action="/login" method="POST">
+          <form action={loginUser} className="flex flex-col gap-4">
             <input
               type="email"
+              name="email"
               placeholder="Email"
               required
               className="px-3 py-3 rounded-lg border bg-white border-gray-200 text-base focus:outline-none focus:ring-2 focus:ring-[#EF7A2D]"
             />
             <input
               type="password"
+              name="password"
               placeholder="Senha"
               required
               className="px-3 py-3 rounded-lg border bg-white border-gray-200 text-base focus:outline-none focus:ring-2 focus:ring-[#EF7A2D]"

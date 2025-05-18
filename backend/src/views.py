@@ -8,7 +8,6 @@ from django.http import JsonResponse
 import json
 
 # Create your views here.
-
 # Realiza login no backend e retorna mensagem para o next.js
 @csrf_exempt
 def login_view(request):
@@ -23,3 +22,23 @@ def login_view(request):
         else:
             return JsonResponse({"success": False, "error": "Credenciais inválidas"}, status=401)
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
+# Realiza logout no backend e retorna mensagem para o next.js
+@login_required
+def logout_view(request):
+    logout(request)
+    return JsonResponse({"success": True, "message": "Logout bem-sucedido"})
+
+# Verifica a existência da sessão e retorna seus dados
+@login_required
+def session_status(request):
+    if request.user.is_authenticated:
+        user = request.user
+        user_data = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.username,
+        }
+        return JsonResponse({"authenticated": True, "user": user_data})
+    else:
+        return JsonResponse({"authenticated": False, "user": None})

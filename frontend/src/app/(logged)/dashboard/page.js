@@ -1,9 +1,13 @@
 import React from 'react'
+import Sidebar from '@/app/components/navbar'
 
-const page = () => {
+const Page = () => {
   return (
-    <div>page</div>
+    <div style={{ display: 'flex' }}>
+      <Sidebar />
+      <div>page</div>
+    </div>
   )
 }
 
-export default page
+export default Page

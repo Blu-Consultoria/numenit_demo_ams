@@ -32,7 +32,6 @@ def logout_view(request):
     return JsonResponse({"success": True, "message": "Logout bem-sucedido"})
 
 # Verifica a existência da sessão e retorna seus dados
-@login_required
 def session_status(request):
     if request.user.is_authenticated:
         user = request.user
@@ -46,7 +45,6 @@ def session_status(request):
         return JsonResponse({"authenticated": False, "user": None})
     
 # Autenticação de permissão
-@login_required(login_url=None)
 def check_permission(request):
     user = request.user
     if not user.is_authenticated:

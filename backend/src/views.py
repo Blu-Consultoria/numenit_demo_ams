@@ -11,7 +11,6 @@ import json
 # Rotas de Login
 
 # Realiza login no backend e retorna mensagem para o next.js
-@csrf_exempt
 def login_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -26,9 +25,9 @@ def login_view(request):
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
 # Realiza logout no backend e retorna mensagem para o next.js
-@login_required
 def logout_view(request):
-    logout(request)
+    if request.user.is_authenticated:
+        logout(request)
     return JsonResponse({"success": True, "message": "Logout bem-sucedido"})
 
 # Verifica a existência da sessão e retorna seus dados

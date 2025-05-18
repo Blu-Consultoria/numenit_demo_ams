@@ -7,7 +7,9 @@ from .forms import CustomUserCreationForm
 from django.http import JsonResponse
 import json
 
-# Create your views here.
+
+# Rotas de Login
+
 # Realiza login no backend e retorna mensagem para o next.js
 @csrf_exempt
 def login_view(request):
@@ -42,3 +44,8 @@ def session_status(request):
         return JsonResponse({"authenticated": True, "user": user_data})
     else:
         return JsonResponse({"authenticated": False, "user": None})
+    
+
+# ---------------------------------------------------------------------------------
+
+# Rotas de dashboard

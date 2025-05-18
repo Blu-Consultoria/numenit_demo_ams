@@ -18,7 +18,7 @@ export default function LoginPage() {
           </div>
           <form action={loginUser} className="flex flex-col gap-4">
             <input
-              type="email"
+              type="text"
               name="email"
               placeholder="Email"
               required

@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'corsheaders',
     
     # criados
-    'users',
-    'dashboard',
+    'src',
+    # 'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -151,4 +151,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.212.134.180:3000" 
 ]
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'src.CustomUser'

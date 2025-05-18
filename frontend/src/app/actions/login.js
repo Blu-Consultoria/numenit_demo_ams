@@ -35,3 +35,18 @@ export async function checkUserData() {
     return { success: false, error: "Erro ao verificar status da sessão" };
   }
 }
+
+export async function logoutUser() {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/logout/", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("Você nunca esteve logado");
+
+    return { success: true, data: await res.json() };
+  } catch (error) {
+    return { success: false, error: "Erro ao verificar status da sessão" };
+  }
+}

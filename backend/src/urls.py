@@ -16,12 +16,10 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
-from . import views
+from . import api
 
 urlpatterns = [
-    path('login/', views.login_view),
-    path('logout/', views.logout_view),
-    path('session_status/', views.session_status),
-    path('check_permission/', views.check_permission, name='check_permission'),
-    path("csrf/", views.csrf_token),
+    path('login/', api.login_api),
+    path('logout/', api.logout_view),
+    path('session_status/', api.session_status),
 ]

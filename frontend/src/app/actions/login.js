@@ -1,74 +1,108 @@
 "use server"
 
-function getCookie(name) {
-  if (typeof document === "undefined") return null;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-}
+import { headers } from "next/headers";
+import { cookies } from 'next/headers';
+
+const LOGIN_URL = "http://127.0.0.1:8000/login/";
 
 export async function loginUser(formData) {
   const username = formData.get("email");
   const password = formData.get("password");
+  console.log("Login attempt:", { username, password });
 
-  try {
-    // 1. Buscar o CSRF Token
-    await fetch("http://127.0.0.1:8000/csrf/", {
-      method: "GET",
-      credentials: "include",
-    });
+  const jsonData = JSON.stringify({ username, password });
 
-    const csrfToken = getCookie("csrftoken");
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonData,
+    credentials: "include",
+  };
 
-    // 2. Enviar o login com o token
-    const res = await fetch("http://127.0.0.1:8000/login/", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ username, password }),
-    });
+  const response = await fetch(LOGIN_URL, requestOptions);
 
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data?.error || "Login falhou");
+  if (response.ok) {
+    const responseData = await response.json();
+    console.log("logged in");
+
+    const authToken = responseData.access;
+    if (!authToken) {
+      console.error("Token ausente na resposta");
+      return { success: false, error: "Token ausente" };
     }
 
-    return { success: true, data: await res.json() };
-  } catch (error) {
-    return { success: false, error: error.message || "Erro ao fazer login" };
+    const cookieStore = await cookies();  // ✅ Aqui está a correção
+    cookieStore.set({
+      name: "auth-token",
+      value: authToken,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 3600,
+    });
+    console.log("Auth token cookie set:", authToken);
+    return { success: true };
+  } else {
+    console.error("Login falhou:", response.status);
+    return {
+      success: false,
+      error: `Falha no login: ${response.status}`,
+    };
   }
 }
 
+
+
 export async function checkUserData() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/session_status/", {
-      method: "GET",
-      credentials: "include",
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get('auth-token')?.value;
+
+    if (!authToken) {
+      return { success: false, error: 'User not authenticated' };
+    }
+
+    const res = await fetch('http://127.0.0.1:8000/session', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      },
     });
 
-    if (!res.ok) throw new Error("Failed to check session status");
+    if (!res.ok) {
+      throw new Error(`Error in response: ${res.status}`);
+    }
 
-    return { success: true, data: await res.json() };
+    const data = await res.json();
+    return { success: true, data };
   } catch (error) {
-    return { success: false, error: error.message || "Erro ao verificar sessão" };
+    console.error('Error in checkUserData:', error);
+    return { success: false, error: 'Error checking session status' };
   }
 }
 
 export async function logoutUser() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/logout/", {
-      method: "POST",  // 🚨 CORREÇÃO: deve ser POST
-      credentials: "include",
+    const cookieStore = await cookies();
+
+    // Remove o cookie deletando-o com maxAge 0
+    cookieStore.set({
+      name: "auth-token",
+      value: "",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 0, // Isso remove o cookie
     });
 
-    if (!res.ok) throw new Error("Erro ao deslogar");
-
-    return { success: true, data: await res.json() };
+    console.log("Auth token removido com sucesso.");
+    return { success: true };
   } catch (error) {
-    return { success: false, error: error.message || "Erro ao deslogar" };
+    console.error("Erro ao tentar remover o cookie:", error);
+    return { success: false, error: "Erro ao tentar sair da sessão." };
   }
 }
+
+

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { loginUser, checkUserData } from "../actions/login";
+import { loginUser, checkUserData, logoutUser } from "../actions/login";
 
 export default function LoginPage() {
   return (
@@ -38,12 +38,20 @@ export default function LoginPage() {
               Login
             </button>
           </form>
-            <form action={checkUserData} className="flex flex-col gap-4">
+          <form action={checkUserData} className="flex flex-col gap-4">
             <button
               type="submit"
               className="py-3 rounded-lg bg-[#EF7A2D] hover:bg-[#FC474B] text-white font-bold text-base transition-colors"
             >
               cehck
+            </button>
+          </form>
+          <form action={logoutUser} className="flex flex-col gap-4">
+            <button
+              type="submit"
+              className="py-3 rounded-lg bg-[#EF7A2D] hover:bg-[#FC474B] text-white font-bold text-base transition-colors"
+            >
+              Sair
             </button>
           </form>
           <div className="text-center text-sm">

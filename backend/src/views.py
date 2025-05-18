@@ -11,7 +11,6 @@ import json
 # Rotas de Login
 
 @ensure_csrf_cookie
-@csrf_exempt
 def login_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -75,3 +74,7 @@ def check_permission(request):
     })
     response["Access-Control-Allow-Credentials"] = "true"
     return response
+
+@ensure_csrf_cookie
+def csrf_token(request):
+    return JsonResponse({"csrfToken": "set"})

@@ -144,11 +144,16 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+CORS_ALLOW_CREDENTIALS = True
 # Permitir requisições do Next.js
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://10.212.134.180:3000" 
 ]
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'None'
+#CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+#SESSION_COOKIE_SECURE = True
 
 AUTH_USER_MODEL = 'src.CustomUser'

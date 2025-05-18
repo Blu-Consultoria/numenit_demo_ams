@@ -45,6 +45,22 @@ def session_status(request):
     else:
         return JsonResponse({"authenticated": False, "user": None})
     
+# Autenticação de permissão
+@login_required
+def check_permission(request):
+    user = request.user
+    permissions_data = {
+        "is_authenticated": user.is_authenticated,
+        "is_staff": user.is_staff,
+        "is_superuser": user.is_superuser,
+        "permissions": list(user.get_all_permissions())
+    }
+    
+    return JsonResponse({
+        "success": True,
+        "permissions": permissions_data
+    })
+
 
 # ---------------------------------------------------------------------------------
 

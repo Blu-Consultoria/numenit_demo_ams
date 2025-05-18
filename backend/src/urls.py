@@ -19,7 +19,7 @@ from django.contrib.auth.views import LogoutView
 from . import views
 
 urlpatterns = [
-    # path('dashboard/', include('dashboard.urls')),
-    # path('users/', include('users.urls')),
-    path('login/', views.login_view, name='login'),
+    path('login/', views.login_view),
+    path('logout/', views.logout_view),
+    path('session_status', views.session_status),
 ]

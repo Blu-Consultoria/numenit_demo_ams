@@ -11,6 +11,7 @@ import json
 # Rotas de Login
 
 # Realiza login no backend e retorna mensagem para o next.js
+@csrf_exempt
 def login_view(request):
     if request.method == "POST":
         data = json.loads(request.body)

@@ -26,11 +26,16 @@ def login_view(request):
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
 # Realiza logout no backend e retorna mensagem para o next.js
+@csrf_exempt
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
-    return JsonResponse({"success": True, "message": "Logout bem-sucedido"})
+        response = JsonResponse({"success": True, "message": "Logout successful"})
+        response.delete_cookie('sessionid')
+        return response
+    return JsonResponse({"success": True, "message": "Already logged out"})
 
+@csrf_exempt
 # Verifica a existência da sessão e retorna seus dados
 def session_status(request):
     if request.user.is_authenticated:
@@ -43,7 +48,8 @@ def session_status(request):
         return JsonResponse({"authenticated": True, "user": user_data})
     else:
         return JsonResponse({"authenticated": False, "user": None})
-    
+
+@csrf_exempt
 # Autenticação de permissão
 def check_permission(request):
     user = request.user
